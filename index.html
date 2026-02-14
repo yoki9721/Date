@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    background: #000;
+    color: #fff;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+.section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+
+.section.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+h1 {
+    font-size: 48px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 20px;
+    font-weight: 300;
+    max-width: 600px;
+    line-height: 1.6;
+    color: #aaa;
+}
+
+button {
+    margin-top: 40px;
+    padding: 12px 28px;
+    font-size: 16px;
+    border-radius: 30px;
+    border: 1px solid #fff;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #fff;
+    color: #000;
+}
+
+#noBtn {
+    position: absolute;
+}
+
+.hidden {
+    display: none;
+}
+
+.heart {
+    position: fixed;
+    color: #fff;
+    font-size: 24px;
+    animation: floatUp 2s ease forwards;
+}
+
+@keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-200px); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Page 1 -->
+<div class="section show" id="step1">
+    <h1>Hi Annie.</h1>
+    <p>This is a Date invitation.</p>
+    <button onclick="nextStep(2)">Continue</button>
+</div>
+
+<!-- Page 2 -->
+<div class="section hidden" id="step2">
+    <h1>February 14</h1>
+    <p>A certain person</p>
+    <p>(calm, respectable, slightly handsome)</p>
+    <p>would like to see you.</p>
+    <button onclick="nextStep(3)">Continue</button>
+</div>
+
+<!-- Page 3 -->
+<div class="section hidden" id="step3">
+    <h1>Select Vibe</h1>
+    <p>🌇 A short evening walk</p>
+    <p>☕ Coffee</p>
+    <p>🎬 Movie</p>
+    <p>🎮 Something spontaneous</p>
+    <button onclick="nextStep(4)">Continue</button>
+</div>
+
+<!-- Page 4 -->
+<div class="section hidden" id="step4" style="position:relative;">
+    <h1>Final Decision</h1>
+    <p>Would you like to go out with me?</p>
+    <button onclick="yesClicked()">Yes.</button>
+    <button id="noBtn">No.</button>
+</div>
+
+<!-- Success Page -->
+<div class="section hidden" id="success">
+    <h1>Confirmed.</h1>
+    <p>Excellent choice.</p>
+    <p>I’ll take care of the rest.</p>
+</div>
+
+<script>
+function nextStep(step) {
+    document.querySelectorAll('.section').forEach(s => {
+        s.classList.remove('show');
+        s.classList.add('hidden');
+    });
+
+    let next = document.getElementById('step' + step);
+    next.classList.remove('hidden');
+    setTimeout(() => next.classList.add('show'), 50);
+}
+
+function yesClicked() {
+    createHearts();
+    document.querySelectorAll('.section').forEach(s => {
+        s.classList.remove('show');
+        s.classList.add('hidden');
+    });
+
+    let success = document.getElementById('success');
+    success.classList.remove('hidden');
+    setTimeout(() => success.classList.add('show'), 50);
+}
+
+function createHearts() {
+    for (let i = 0; i < 20; i++) {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.top = Math.random() * window.innerHeight + "px";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 2000);
+    }
+}
+
+// Elegant escaping No button
+const noBtn = document.getElementById("noBtn");
+
+function moveButton() {
+    const maxX = window.innerWidth - noBtn.offsetWidth;
+    const maxY = window.innerHeight - noBtn.offsetHeight;
+
+    noBtn.style.left = Math.random() * maxX + "px";
+    noBtn.style.top = Math.random() * maxY + "px";
+}
+
+noBtn.addEventListener("mouseover", moveButton);
+noBtn.addEventListener("touchstart", moveButton);
+</script>
+
+</body>
+</html>
